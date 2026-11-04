@@ -1,0 +1,21 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/demo-login/route": "app/api/auth/demo-login/route.js",
+  "/api/auth/login/route": "app/api/auth/login/route.js",
+  "/api/auth/me/route": "app/api/auth/me/route.js",
+  "/api/auth/register/route": "app/api/auth/register/route.js",
+  "/api/businesses/[id]/route": "app/api/businesses/[id]/route.js",
+  "/api/auth/logout/route": "app/api/auth/logout/route.js",
+  "/api/businesses/route": "app/api/businesses/route.js",
+  "/api/categories/route": "app/api/categories/route.js",
+  "/icon.png/route": "app/icon.png/route.js",
+  "/login/page": "app/login/page.js",
+  "/panel/editar/[id]/page": "app/panel/editar/[id]/page.js",
+  "/publicar/page": "app/publicar/page.js",
+  "/panel/page": "app/panel/page.js",
+  "/registro/page": "app/registro/page.js",
+  "/api/locations/route": "app/api/locations/route.js",
+  "/negocios/[id]/page": "app/negocios/[id]/page.js",
+  "/negocios/page": "app/negocios/page.js",
+  "/page": "app/page.js"
+}

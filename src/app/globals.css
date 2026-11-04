@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Leaflet Map CSS */
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --ink: #aa0055;
+  --paper: #EFEDE6;
+  --paper-deep: #E6E2D6;
+  --brass: #450023;
+  --brass-dark: #8F6829;
+  --forest: #3F5A48;
+  --slate: #2C2E33;
+  --slate-soft: #5B5F66;
+  --hairline: #D9D4C6;
+  --card: #FBFAF6;
+  --background: #FBFAF6;
+  --foreground: #2C2E33;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-mono {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Ensure leaflet controls and pins render properly with Tailwind reset */
+.leaflet-pane {
+  z-index: 10 !important;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 20 !important;
+}
+
+.custom-leaflet-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+* {
+  box-sizing: border-box;
+}

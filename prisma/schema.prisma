@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  name         String
+  passwordHash String?
+  image        String?
+  provider     String     @default("credentials") // "credentials" or "google"
+  role         String     @default("USER")        // "USER" or "ADMIN"
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  businesses   Business[]
+}
+
+model Category {
+  id          String     @id @default(uuid())
+  slug        String     @unique
+  name        String
+  icon        String     // Lucide icon name or emoji
+  description String?
+  color       String?    // Accent color
+
+  businesses  Business[]
+}
+
+model Business {
+  id               String    @id @default(uuid())
+  slug             String    @unique
+  name             String
+  description      String
+  shortDescription String?
+  
+  // Categoría
+  categoryId       String
+  category         Category  @relation(fields: [categoryId], references: [id])
+
+  // Ubicación Geográfica en Latinoamérica
+  country          String    // Ej: "Colombia", "México", "Argentina"
+  countryCode      String    // Ej: "CO", "MX", "AR"
+  city             String    // Ej: "Bogotá", "Ciudad de México", "Buenos Aires"
+  address          String
+  latitude         Float     // Para mapa interactivo (Leaflet/OSM)
+  longitude        Float     // Para mapa interactivo (Leaflet/OSM)
+
+  // Medios e Imágenes
+  logoUrl          String?
+  bannerUrl        String?
+
+  // Contacto & Redes (con WhatsApp obligatorio y destacado)
+  whatsapp         String    // Teléfono con código de país para enlace directo wa.me
+  phone            String?
+  email            String?
+  website          String?
+  instagram        String?
+  facebook         String?
+  linkedin         String?
+
+  // Datos adicionales
+  schedule         String?   // Horarios ej: "Lunes a Viernes 09:00 - 18:00"
+  featured         Boolean   @default(false)
+  verified         Boolean   @default(true)
+  rating           Float     @default(5.0)
+
+  // Propietario
+  userId           String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}

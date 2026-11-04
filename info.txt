@@ -1,0 +1,29 @@
+npm start
+
+🌟 AZ DIRECTORIO Empresarial (https://azdirectorio.com/)
+Plataforma y directorio empresarial líder de Latinoamérica con identidad corporativa oficial.
+
+Identidad & Branding Corporativo:
+- Nombre Oficial: AZ DIRECTORIO Empresarial
+- Logotipo oficial de AZ Directorio implementado en Header, Footer, Navegación y Favicon.
+- Colores corporativos aplicados:
+  * Magenta / Borgoña principal (--ink): #aa0055
+  * Acentos vivos del logo: #FD007E / #D5006B
+  * Borgoña profundo (--brass): #450023
+  * Dorado / Brass decorativo (--brass-dark): #8F6829
+  * Fondo cálido corporativo (--paper / --card): #FBFAF6 / #EFEDE6
+  * Texto corporativo (--slate): #2C2E33
+  * Tipografías: DM Sans + Cormorant Garamond
+
+Estructura y Cobertura Geográfica:
+- Organizado por 12+ Categorías Comerciales con iconos y contadores de comercios.
+- Cobertura completa de ciudades de Latinoamérica por país (Bogotá, Medellín, Cali, Barranquilla, CDMX, Guadalajara, Buenos Aires, Santiago, Lima, Quito, etc.) con sus coordenadas y prefijos telefónicos.
+- Ficha completa de cada empresa con contacto directo por WhatsApp con mensaje corporativo de AZ Directorio.
+
+🌐 Cómo Acceder y Probar la Plataforma:
+👉 Servidor local: http://localhost:3000
+
+- Explorar AZ Directorio: http://localhost:3000/negocios
+- Publicar Empresa: http://localhost:3000/publicar
+- Panel de Control: http://localhost:3000/panel
+- Acceso Demo con 1 Clic o credenciales: demo@azdirectorio.com / demo1234

@@ -1,0 +1,634 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directorio Empresarial - AZ Directorio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root{
+    --ink:#aa0055;
+    --paper:#EFEDE6;
+    --paper-deep:#E6E2D6;
+    --brass:#450023;
+    --brass-dark:#8F6829;
+    --forest:#3F5A48;
+    --slate:#2C2E33;
+    --slate-soft:#5B5F66;
+    --hairline:#D9D4C6;
+    --card:#FBFAF6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--paper);color:var(--slate);font-family:'DM Sans',system-ui,sans-serif;}
+  .serif{font-family:'Cormorant Garamond',Georgia,serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  button{cursor:pointer;font-family:inherit;border:none;background:none;}
+  input,select,textarea{font-family:inherit;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  .hidden{display:none !important;}
+
+  /* Header */
+  header{background:var(--ink);border-bottom:1px solid var(--brass-dark);}
+  header .row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;}
+  .logo{display:flex;align-items:center;gap:8px;color:#F6F3EC;}
+  .logo .mark{width:34px;height:34px;border:1.5px solid var(--brass);display:flex;align-items:center;justify-content:center;}
+  .logo .mark span{color:var(--brass);font-size:20px;font-weight:600;}
+  .logo .word{font-size:24px;letter-spacing:.5px;}
+  .logo .word b{color:var(--brass);font-weight:600;}
+  .tagline{color:#C8C3B4;font-size:13px;letter-spacing:1px;}
+  .header-actions{display:flex;align-items:center;gap:12px;}
+  .btn-ghost{color:#F6F3EC;font-size:14px;transition:opacity .15s;}
+  .btn-ghost:hover{opacity:.7;}
+  .btn-brass{background:var(--brass);color:var(--ink);font-size:14px;font-weight:600;padding:10px 18px;transition:opacity .15s;}
+  .btn-brass:hover{opacity:.9;}
+  .btn-brass:disabled{background:var(--hairline);color:var(--slate-soft);cursor:not-allowed;}
+  .btn-ink{background:var(--ink);color:#F6F3EC;font-size:14px;font-weight:600;padding:12px;transition:opacity .15s;}
+  .btn-ink:hover{opacity:.9;}
+
+  /* Hero */
+  .hero{background:var(--ink);position:relative;overflow:hidden;}
+  .hero::before{content:"";position:absolute;inset:0;opacity:.05;
+    background-image:repeating-linear-gradient(0deg,var(--brass) 0,var(--brass) 1px,transparent 1px,transparent 42px);}
+  .hero .inner{position:relative;padding:64px 0 56px;}
+  .eyebrow{color:var(--brass);font-size:12px;letter-spacing:3px;}
+  .hero h1{color:#F6F3EC;font-size:clamp(32px,6vw,58px);line-height:1.05;margin-top:12px;max-width:720px;}
+  .hero p.sub{color:#C8C3B4;font-size:16px;margin-top:14px;max-width:560px;}
+
+  .search-bar{background:var(--card);border:1px solid var(--hairline);margin-top:32px;padding:8px;
+    display:flex;gap:8px;max-width:720px;flex-wrap:wrap;}
+  .search-field{display:flex;align-items:center;gap:8px;flex:1;padding:8px 12px;min-width:200px;}
+  .search-field.city{border-left:1px solid var(--hairline);min-width:180px;}
+  .search-field input,.search-field select{width:100%;outline:none;border:none;background:transparent;font-size:14px;color:var(--slate);}
+
+  /* Category index */
+  .cat-index{background:var(--paper-deep);border-bottom:1px solid var(--hairline);}
+  .cat-scroll{display:flex;gap:8px;padding:16px 0;overflow-x:auto;}
+  .cat-chip{font-size:13px;white-space:nowrap;padding:8px 14px;border:1px solid var(--hairline);display:flex;align-items:center;gap:6px;color:var(--slate);background:transparent;}
+  .cat-chip.active{border-color:var(--brass);background:var(--ink);color:#F6F3EC;}
+  .cat-chip i{width:14px;height:14px;}
+
+  /* Results header */
+  .results-head{display:flex;align-items:center;justify-content:space-between;padding:32px 0 8px;}
+  .count-badge{color:var(--slate-soft);font-size:13px;}
+  .count-badge .n{color:var(--ink);}
+  .view-toggle{border:1px solid var(--hairline);display:flex;}
+  .view-toggle button{padding:6px 10px;}
+  .view-toggle button.active{background:var(--ink);}
+  .view-toggle button.active i{color:#F6F3EC;}
+  .view-toggle i{color:var(--slate-soft);width:15px;height:15px;}
+
+  /* Cards grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:16px 0 64px;}
+  .card{background:var(--card);border:1px solid var(--hairline);text-align:left;padding:20px;display:flex;flex-direction:column;gap:12px;transition:box-shadow .15s;}
+  .card:hover{box-shadow:0 4px 14px rgba(19,27,41,.08);}
+  .card-top{display:flex;align-items:flex-start;justify-content:space-between;}
+  .cat-icon-box{background:var(--ink);width:44px;height:44px;display:flex;align-items:center;justify-content:center;}
+  .cat-icon-box i{color:var(--brass);width:20px;height:20px;}
+  .stamp{border-radius:50%;border:2px solid var(--brass);display:flex;align-items:center;justify-content:center;
+    transform:rotate(-8deg);flex-shrink:0;background:rgba(184,134,61,.08);}
+  .stamp i{color:var(--brass);}
+  .card h3{font-size:21px;color:var(--ink);line-height:1.15;}
+  .card .meta{font-size:12px;color:var(--slate-soft);margin-top:2px;}
+  .card .desc{font-size:13px;color:var(--slate);line-height:1.5;}
+  .card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+  .stars{display:flex;gap:2px;}
+  .stars i{width:13px;height:13px;color:var(--brass);}
+  .rating-text{font-size:11px;color:var(--slate-soft);}
+  .empty-msg{grid-column:1/-1;color:var(--slate-soft);}
+
+  /* Map */
+  .map-box{background:var(--paper-deep);border:1px solid var(--hairline);height:420px;position:relative;overflow:hidden;margin:16px 0 64px;}
+  .map-caption{position:absolute;bottom:10px;left:12px;font-size:11px;color:var(--slate-soft);}
+
+  /* Detail view */
+  .detail-wrap{max-width:880px;margin:0 auto;padding:40px 24px;}
+  .back-link{display:flex;align-items:center;gap:4px;margin-bottom:24px;color:var(--slate-soft);font-size:13px;}
+  .back-link i{width:16px;height:16px;}
+  .detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .detail-title-row{display:flex;align-items:flex-start;gap:16px;}
+  .detail-icon{background:var(--ink);width:64px;height:64px;display:flex;align-items:center;justify-content:center;}
+  .detail-icon i{color:var(--brass);width:28px;height:28px;}
+  .detail-title-row h1{font-size:34px;color:var(--ink);}
+  .verified-badge{display:flex;align-items:center;gap:8px;border:1px solid var(--brass);padding:8px 14px;}
+  .verified-badge span{font-size:12px;color:var(--brass-dark);font-weight:600;}
+  .detail-cols{display:grid;grid-template-columns:2fr 1fr;gap:32px;margin-top:40px;}
+  @media (max-width:720px){.detail-cols{grid-template-columns:1fr;}}
+  .detail-desc{font-size:15px;color:var(--slate);line-height:1.7;}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+  .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--forest);border:1px solid var(--forest);padding:4px 10px;}
+  .contact-box{background:var(--card);border:1px solid var(--hairline);padding:20px;height:fit-content;}
+  .contact-box .label{font-size:12px;color:var(--slate-soft);letter-spacing:1px;}
+  .contact-row{display:flex;align-items:center;gap:8px;margin-top:12px;}
+  .contact-row i{width:15px;height:15px;color:var(--brass);}
+  .contact-row.mono span{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--ink);}
+  .contact-row.sans span{font-size:13px;color:var(--ink);}
+  .contact-box .btn-ink{width:100%;margin-top:20px;}
+
+  /* Forms */
+  .form-wrap{max-width:640px;margin:0 auto;padding:48px 24px;}
+  .step-label{color:var(--brass);font-size:12px;letter-spacing:2px;}
+  .form-wrap h1{font-size:32px;color:var(--ink);margin-top:6px;}
+  .form-sub{font-size:14px;color:var(--slate-soft);margin-top:6px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;}
+  @media (max-width:600px){.form-grid{grid-template-columns:1fr;}}
+  .form-grid .span2{grid-column:1/-1;}
+  .field label{font-size:12px;color:var(--slate-soft);display:block;margin-bottom:4px;}
+  .field input,.field select,.field textarea{width:100%;border:1px solid var(--hairline);background:var(--card);padding:8px 12px;font-size:14px;color:var(--ink);outline:none;}
+  .field textarea{resize:none;}
+
+  .plan-wrap{max-width:960px;margin:0 auto;padding:48px 24px;}
+  .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;}
+  @media (max-width:800px){.plans-grid{grid-template-columns:1fr;}}
+  .plan-card{text-align:left;background:var(--card);border:1px solid var(--hairline);padding:20px;transition:border-color .15s,background .15s;}
+  .plan-card.active{background:var(--ink);border-color:var(--brass);}
+  .plan-card .pname{font-size:22px;color:var(--ink);font-family:'Cormorant Garamond',Georgia,serif;}
+  .plan-card.active .pname{color:#F6F3EC;}
+  .plan-card .pprice{font-family:'IBM Plex Mono',monospace;font-size:16px;color:var(--brass-dark);margin-top:4px;}
+  .plan-card.active .pprice{color:var(--brass);}
+  .plan-features{margin-top:16px;display:flex;flex-direction:column;gap:8px;}
+  .plan-features div{display:flex;align-items:flex-start;gap:8px;}
+  .plan-features i{width:14px;height:14px;color:var(--forest);margin-top:2px;flex-shrink:0;}
+  .plan-card.active .plan-features i{color:var(--brass);}
+  .plan-features span{font-size:13px;color:var(--slate);}
+  .plan-card.active .plan-features span{color:#C8C3B4;}
+
+  .confirm-wrap{max-width:560px;margin:0 auto;padding:96px 24px;text-align:center;}
+  .confirm-wrap h1{font-size:30px;color:var(--ink);margin-top:16px;}
+  .confirm-wrap p{font-size:14px;color:var(--slate-soft);margin-top:8px;}
+  .stamp-lg{width:64px;height:64px;margin:0 auto;}
+  .stamp-lg i{width:32px;height:32px;}
+
+  /* Footer */
+  footer{background:var(--ink);border-top:1px solid var(--brass-dark);}
+  .footer-row{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:40px 0;}
+  .footer-brand .word{font-size:22px;color:#F6F3EC;}
+  .footer-brand p{color:#8A8776;font-size:13px;margin-top:8px;max-width:320px;}
+  .footer-links{display:flex;gap:32px;color:#8A8776;font-size:13px;}
+  .footer-links .col p:first-child{color:var(--brass);margin-bottom:8px;}
+  .footer-links .col p{margin-top:2px;}
+
+  /* Login modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(19,27,41,.6);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;}
+  .modal{background:var(--paper);border:1px solid var(--hairline);width:380px;padding:24px;position:relative;}
+  .modal .close-btn{position:absolute;top:16px;right:16px;}
+  .modal .close-btn i{width:18px;height:18px;color:var(--slate-soft);}
+  .modal h2{font-size:26px;color:var(--ink);}
+  .modal .sub{font-size:13px;color:var(--slate-soft);margin-top:4px;}
+  .modal-fields{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
+  .modal-fields input{border:1px solid var(--hairline);background:var(--card);padding:8px 12px;font-size:14px;outline:none;}
+  .modal .btn-brass{width:100%;margin-top:20px;padding:12px;}
+  .modal-foot{font-size:12px;color:var(--slate-soft);margin-top:10px;text-align:center;}
+  .modal-foot b{color:var(--brass-dark);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap row">
+    <button class="logo" id="logoBtn">
+      <img src="https://pentacinco.com/images/logo-az.png" width="150px">
+    </button>
+    <span class="tagline hide-mobile">DIRECTORIO EMPRESARIAL DE LATINOAMÃRICA</span>
+    <div class="header-actions">
+      <button class="btn-ghost" id="loginBtn">Iniciar sesiÃ³n</button>
+      <button class="btn-brass" id="addBtn">Agregar mi empresa</button>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="footer-brand">
+      <img src="https://pentacinco.com/images/logo-az.png" width="150px">
+      <p>El Ã­ndice de empresas y negocios verificadas mÃ¡s consultado de la regiÃ³n. EncuÃ©ntralas, fÃ¡cil y rÃ¡pido.</p>
+    </div>
+    <div class="footer-links">
+      <div class="col">
+        <p>Directorio</p>
+        <p>CategorÃ­as</p>
+        <p>Ciudades</p>
+        <p>Empresas nuevas</p>
+      </div>
+      <div class="col">
+        <p>Legal</p>
+        <p>TÃ©rminos y condiciones</p>
+        <p>PolÃ­tica de datos</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="modalRoot"></div>
+
+<script>
+/* ---------- Data ---------- */
+const CATEGORIES = [
+  { id: "legal", label: "Servicios Legales", icon: "scale" },
+  { id: "marketing", label: "Marketing y Publicidad", icon: "megaphone" },
+  { id: "limpieza", label: "Limpieza Profesional", icon: "sparkles" },
+  { id: "tecnologia", label: "TecnologÃ­a y Software", icon: "laptop" },
+  { id: "construccion", label: "ConstrucciÃ³n e Infraestructura", icon: "hard-hat" },
+  { id: "salud", label: "Salud y Bienestar", icon: "stethoscope" },
+  { id: "inmobiliaria", label: "Inmobiliaria", icon: "home" },
+  { id: "turismo", label: "Turismo", icon: "plane" },
+  { id: "seguridad", label: "Seguridad Industrial", icon: "shield-alert" },
+];
+
+const CITIES = ["BogotÃ¡", "MedellÃ­n", "Cali", "Barranquilla", "Cartagena"];
+
+const BUSINESSES = [
+  { id: 1, name: "Bufete RincÃ³n & Asociados", cat: "legal", city: "BogotÃ¡", verified: true, rating: 4.8, reviews: 32, phone: "+57 320 555 0142", email: "contacto@rinconasociados.co", desc: "Firma de abogados especializada en derecho corporativo, contratos y litigios comerciales para pymes y startups en Colombia.", tags: ["derecho corporativo", "contratos", "litigios"] },
+  { id: 2, name: "Pixel & Marca Estudio", cat: "marketing", city: "BogotÃ¡", verified: true, rating: 4.9, reviews: 58, phone: "+57 310 555 0198", email: "hola@pixelymarca.co", desc: "Agencia de marketing digital y diseÃ±o web enfocada en marcas que quieren posicionarse en LATAM.", tags: ["seo", "diseÃ±o web", "redes sociales"] },
+  { id: 3, name: "Limpia Total Cali", cat: "limpieza", city: "Cali", verified: false, rating: 4.4, reviews: 19, phone: "+57 315 555 0233", email: "info@limpiatotal.co", desc: "Limpieza profesional de oficinas, alfombras y tapetes con productos certificados.", tags: ["oficinas", "alfombras", "desinfecciÃ³n"] },
+  { id: 4, name: "NimbusCloud CO", cat: "tecnologia", city: "MedellÃ­n", verified: true, rating: 4.7, reviews: 41, phone: "+57 300 555 0287", email: "ventas@nimbuscloud.co", desc: "Infraestructura cloud, respaldo de datos y soporte de servidores para empresas medianas.", tags: ["cloud", "backup", "servidores"] },
+  { id: 5, name: "Constructora Andesa", cat: "construccion", city: "BogotÃ¡", verified: true, rating: 4.6, reviews: 27, phone: "+57 312 555 0176", email: "proyectos@andesa.co", desc: "DiseÃ±o y construcciÃ³n de infraestructura comercial e industrial con mÃ¡s de 15 aÃ±os de experiencia.", tags: ["obra civil", "diseÃ±o estructural"] },
+  { id: 6, name: "Vitalis Terapias", cat: "salud", city: "Cartagena", verified: false, rating: 4.5, reviews: 14, phone: "+57 301 555 0165", email: "citas@vitalisterapias.co", desc: "Centro de psicologÃ­a y terapia de pareja con atenciÃ³n presencial y virtual.", tags: ["psicologÃ­a", "terapia de pareja"] },
+  { id: 7, name: "Ofixinas Prime", cat: "inmobiliaria", city: "BogotÃ¡", verified: true, rating: 4.9, reviews: 63, phone: "+57 318 555 0119", email: "arriendo@ofixinasprime.co", desc: "Arriendo y venta de oficinas comerciales en las principales zonas empresariales de BogotÃ¡.", tags: ["arriendo oficinas", "bienes raÃ­ces"] },
+  { id: 8, name: "Rutas del Caribe Tours", cat: "turismo", city: "Cartagena", verified: false, rating: 4.3, reviews: 21, phone: "+57 305 555 0244", email: "reservas@rutascaribe.co", desc: "Tours guiados y experiencias turÃ­sticas personalizadas por el Caribe colombiano.", tags: ["tours", "experiencias"] },
+  { id: 9, name: "Blindaje Industrial SAS", cat: "seguridad", city: "Barranquilla", verified: true, rating: 4.6, reviews: 17, phone: "+57 317 555 0208", email: "info@blindajeindustrial.co", desc: "ConsultorÃ­a y equipos de seguridad industrial para plantas de manufactura.", tags: ["EPP", "consultorÃ­a", "auditorÃ­as"] },
+  { id: 10, name: "Contify Contadores", cat: "legal", city: "MedellÃ­n", verified: true, rating: 4.7, reviews: 39, phone: "+57 314 555 0177", email: "contacto@contify.co", desc: "Contabilidad, nÃ³mina y outsourcing financiero para empresas en crecimiento.", tags: ["contabilidad", "nÃ³mina", "revisorÃ­a fiscal"] },
+  { id: 11, name: "Adnova Studio", cat: "marketing", city: "Cali", verified: false, rating: 4.2, reviews: 11, phone: "+57 302 555 0192", email: "hola@adnova.co", desc: "Publicidad y pauta digital para pequeÃ±os negocios locales.", tags: ["pauta digital", "publicidad"] },
+  { id: 12, name: "CasaVerde Inmobiliaria", cat: "inmobiliaria", city: "MedellÃ­n", verified: true, rating: 4.8, reviews: 45, phone: "+57 313 555 0261", email: "info@casaverde.co", desc: "Compra, venta y arriendo de vivienda residencial y locales comerciales.", tags: ["vivienda", "locales comerciales"] },
+];
+
+const PLANS = [
+  { id: "basico", name: "BÃ¡sico", price: "Gratis", features: ["Ficha en el directorio", "1 categorÃ­a", "Datos de contacto"] },
+  { id: "profesional", name: "Profesional", price: "$49.000/mes", features: ["Todo lo del plan BÃ¡sico", "Insignia de verificaciÃ³n", "Hasta 3 categorÃ­as", "EstadÃ­sticas de visitas"] },
+  { id: "premium", name: "Premium", price: "$99.000/mes", features: ["Todo lo del plan Profesional", "PosiciÃ³n destacada", "CategorÃ­as ilimitadas", "Soporte prioritario"] },
+];
+
+/* ---------- App state ---------- */
+const state = {
+  route: "home",
+  listMode: "list",
+  query: "",
+  city: "",
+  activeCat: "",
+  selected: null,
+  form: { name: "", cat: "", city: "", phone: "", email: "", desc: "" },
+  plan: "",
+};
+
+function catLabel(id){ const c = CATEGORIES.find(c=>c.id===id); return c ? c.label : ""; }
+function catIcon(id){ const c = CATEGORIES.find(c=>c.id===id); return c ? c.icon : "building-2"; }
+
+function starsHtml(value){
+  let html = '<div class="stars">';
+  for(let n=1;n<=5;n++){
+    html += `<i data-lucide="star" style="fill:${n<=Math.round(value)?'var(--brass)':'none'}"></i>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function stampHtml(size=46){
+  return `<div class="stamp" style="width:${size}px;height:${size}px;" title="Empresa verificada">
+    <i data-lucide="shield-check" style="width:${size*0.5}px;height:${size*0.5}px;"></i>
+  </div>`;
+}
+
+function filteredBusinesses(){
+  return BUSINESSES.filter(b=>{
+    const q = state.query.trim().toLowerCase();
+    const matchesQuery = q==="" || b.name.toLowerCase().includes(q) || b.tags.some(t=>t.toLowerCase().includes(q));
+    const matchesCity = state.city==="" || b.city===state.city;
+    const matchesCat = state.activeCat==="" || b.cat===state.activeCat;
+    return matchesQuery && matchesCity && matchesCat;
+  });
+}
+
+/* ---------- Renderers ---------- */
+function renderHome(){
+  const list = filteredBusinesses();
+  return `
+    <section class="hero">
+      <div class="wrap inner">
+        <p class="eyebrow mono">EDICIÃN 2026 Â· MÃS DE 12.000 EMPRESAS REGISTRADAS</p>
+        <h1 class="serif">El directorio de empresas que LatinoamÃ©rica consulta primero.</h1>
+        <p class="sub">Encuentra proveedores verificados por categorÃ­a y ciudad, o publica tu negocio para que te encuentren a ti.</p>
+        <div class="search-bar">
+          <div class="search-field">
+            <i data-lucide="search" style="width:18px;height:18px;color:var(--slate-soft)"></i>
+            <input id="searchInput" type="text" placeholder="Busca una empresa, servicio o categorÃ­a" value="${state.query}">
+          </div>
+          <div class="search-field city">
+            <i data-lucide="map-pin" style="width:16px;height:16px;color:var(--slate-soft)"></i>
+            <select id="cityInput">
+              <option value="">Toda Colombia</option>
+              ${CITIES.map(c=>`<option value="${c}" ${state.city===c?'selected':''}>${c}</option>`).join('')}
+            </select>
+          </div>
+          <button class="btn-brass" id="searchBtn">Buscar</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="cat-index">
+      <div class="wrap cat-scroll">
+        <button class="cat-chip ${state.activeCat===''?'active':''}" data-cat="">Todas las categorÃ­as</button>
+        ${CATEGORIES.map(c=>`
+          <button class="cat-chip ${state.activeCat===c.id?'active':''}" data-cat="${c.id}">
+            <i data-lucide="${c.icon}"></i>${c.label}
+          </button>`).join('')}
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="results-head">
+        <p class="count-badge">
+          <span class="mono n">${String(list.length).padStart(2,'0')}</span> empresas encontradas
+        </p>
+        <div class="view-toggle">
+          <button class="${state.listMode==='list'?'active':''}" data-mode="list"><i data-lucide="list"></i></button>
+          <button class="${state.listMode==='map'?'active':''}" data-mode="map"><i data-lucide="map"></i></button>
+        </div>
+      </div>
+
+      ${state.listMode==='list' ? renderGrid(list) : renderMap(list)}
+    </div>
+  `;
+}
+
+function renderGrid(list){
+  if(list.length===0){
+    return `<div class="grid"><p class="empty-msg">No se encontraron empresas con esos criterios. Ajusta tu bÃºsqueda.</p></div>`;
+  }
+  return `<div class="grid">
+    ${list.map(b=>`
+      <button class="card" data-select="${b.id}">
+        <div class="card-top">
+          <div class="cat-icon-box"><i data-lucide="${catIcon(b.cat)}"></i></div>
+          ${b.verified ? stampHtml(38) : ''}
+        </div>
+        <div>
+          <h3 class="serif">${b.name}</h3>
+          <p class="meta">${catLabel(b.cat)} Â· ${b.city}</p>
+        </div>
+        <p class="desc">${b.desc.slice(0,92)}â¦</p>
+        <div class="card-bottom">
+          <div style="display:flex;align-items:center;gap:8px;">
+            ${starsHtml(b.rating)}
+            <span class="mono rating-text">${b.rating} (${b.reviews})</span>
+          </div>
+          <i data-lucide="chevron-right" style="width:16px;height:16px;color:var(--slate-soft)"></i>
+        </div>
+      </button>
+    `).join('')}
+  </div>`;
+}
+
+function renderMap(list){
+  const pins = list.map(b=>{
+    const x = 80 + ((b.id*137) % 640);
+    const y = 60 + ((b.id*91) % 300);
+    const color = b.verified ? 'var(--brass)' : 'var(--forest)';
+    return `<g data-select="${b.id}" style="cursor:pointer">
+      <circle cx="${x}" cy="${y}" r="9" fill="${color}" opacity="0.9"/>
+      <circle cx="${x}" cy="${y}" r="14" fill="none" stroke="${color}" stroke-width="1" opacity="0.4"/>
+    </g>`;
+  }).join('');
+  let lines = '';
+  for(let i=0;i<9;i++) lines += `<line x1="${i*90}" y1="0" x2="${i*90}" y2="420" stroke="var(--hairline)" stroke-width="1"/>`;
+  for(let i=0;i<6;i++) lines += `<line x1="0" y1="${i*80}" x2="800" y2="${i*80}" stroke="var(--hairline)" stroke-width="1"/>`;
+  return `<div class="map-box">
+    <svg width="100%" height="100%" viewBox="0 0 800 420">
+      <rect width="800" height="420" fill="var(--paper-deep)"/>
+      ${lines}
+      ${pins}
+    </svg>
+    <p class="map-caption">Vista de mapa ilustrativa â conecta tu proveedor de mapas para ubicaciones reales.</p>
+  </div>`;
+}
+
+function renderDetail(){
+  const b = state.selected;
+  if(!b) return renderHome();
+  return `
+    <div class="detail-wrap">
+      <button class="back-link" id="backBtn"><i data-lucide="chevron-left"></i> Volver al directorio</button>
+      <div class="detail-head">
+        <div class="detail-title-row">
+          <div class="detail-icon"><i data-lucide="${catIcon(b.cat)}"></i></div>
+          <div>
+            <h1 class="serif">${b.name}</h1>
+            <p class="meta" style="margin-top:4px">${catLabel(b.cat)} Â· ${b.city}</p>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+              ${starsHtml(b.rating)}
+              <span class="mono" style="font-size:12px;color:var(--slate-soft)">${b.rating} Â· ${b.reviews} reseÃ±as</span>
+            </div>
+          </div>
+        </div>
+        ${b.verified ? `<div class="verified-badge">${stampHtml(28)}<span>Empresa Verificada</span></div>` : ''}
+      </div>
+
+      <div class="detail-cols">
+        <div>
+          <p class="detail-desc">${b.desc}</p>
+          <div class="tags">${b.tags.map(t=>`<span class="tag mono">${t}</span>`).join('')}</div>
+        </div>
+        <div class="contact-box">
+          <p class="label">CONTACTO</p>
+          <div class="contact-row mono"><i data-lucide="phone"></i><span>${b.phone}</span></div>
+          <div class="contact-row sans"><i data-lucide="mail"></i><span>${b.email}</span></div>
+          <button class="btn-ink">Solicitar cotizaciÃ³n</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderAdd1(){
+  const f = state.form;
+  return `
+    <div class="form-wrap">
+      <button class="back-link" id="cancelBtn"><i data-lucide="chevron-left"></i> Cancelar</button>
+      <p class="step-label mono">PASO 1 DE 2</p>
+      <h1 class="serif">Registra tu empresa</h1>
+      <p class="form-sub">Completa los datos para publicar tu negocio en el directorio.</p>
+      <div class="form-grid">
+        <label class="field"><label>Nombre de la empresa</label><input id="f_name" value="${f.name}"></label>
+        <label class="field"><label>CategorÃ­a</label>
+          <select id="f_cat">
+            <option value="">Selecciona</option>
+            ${CATEGORIES.map(c=>`<option value="${c.id}" ${f.cat===c.id?'selected':''}>${c.label}</option>`).join('')}
+          </select>
+        </label>
+        <label class="field"><label>Ciudad</label>
+          <select id="f_city">
+            <option value="">Selecciona</option>
+            ${CITIES.map(c=>`<option value="${c}" ${f.city===c?'selected':''}>${c}</option>`).join('')}
+          </select>
+        </label>
+        <label class="field"><label>TelÃ©fono</label><input id="f_phone" value="${f.phone}"></label>
+        <label class="field span2"><label>Correo electrÃ³nico</label><input id="f_email" value="${f.email}"></label>
+        <label class="field span2"><label>DescripciÃ³n breve</label><textarea id="f_desc" rows="3">${f.desc}</textarea></label>
+      </div>
+      <button class="btn-brass" id="toStep2Btn" style="margin-top:32px;display:flex;align-items:center;gap:8px;width:fit-content;">
+        Continuar <i data-lucide="arrow-right"></i>
+      </button>
+    </div>
+  `;
+}
+
+function renderAdd2(){
+  return `
+    <div class="plan-wrap">
+      <button class="back-link" id="backToStep1Btn"><i data-lucide="chevron-left"></i> Volver</button>
+      <p class="step-label mono">PASO 2 DE 2</p>
+      <h1 class="serif">Elige tu plan de publicaciÃ³n</h1>
+      <div class="plans-grid">
+        ${PLANS.map(p=>`
+          <button class="plan-card ${state.plan===p.id?'active':''}" data-plan="${p.id}">
+            <p class="pname">${p.name}</p>
+            <p class="pprice mono">${p.price}</p>
+            <div class="plan-features">
+              ${p.features.map(feat=>`<div><i data-lucide="check"></i><span>${feat}</span></div>`).join('')}
+            </div>
+          </button>
+        `).join('')}
+      </div>
+      <button class="btn-brass" id="finishBtn" ${state.plan===''?'disabled':''} style="margin-top:32px;display:flex;align-items:center;gap:8px;width:fit-content;">
+        Continuar al pago <i data-lucide="arrow-right"></i>
+      </button>
+    </div>
+  `;
+}
+
+function renderConfirmation(){
+  return `
+    <div class="confirm-wrap">
+      <div class="stamp-lg">${stampHtml(64)}</div>
+      <h1 class="serif">Tu empresa fue registrada</h1>
+      <p>En este prototipo, este paso simula la confirmaciÃ³n de pago y publicaciÃ³n. En producciÃ³n aquÃ­ se procesarÃ­a la suscripciÃ³n y se activarÃ­a la ficha en el directorio.</p>
+      <button class="btn-ink" id="finalBackBtn" style="margin-top:32px;padding:12px 24px;">Volver al directorio</button>
+    </div>
+  `;
+}
+
+function renderLoginModal(){
+  return `
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <button class="close-btn" id="closeModalBtn"><i data-lucide="x"></i></button>
+        <h2 class="serif">Iniciar sesiÃ³n</h2>
+        <p class="sub">Accede a tu cuenta para gestionar tu ficha.</p>
+        <div class="modal-fields">
+          <input type="email" placeholder="Correo electrÃ³nico">
+          <input type="password" placeholder="ContraseÃ±a">
+        </div>
+        <button class="btn-brass">Entrar</button>
+        <p class="modal-foot">Â¿No tienes cuenta? <b>RegÃ­strate</b></p>
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- Main render + events ---------- */
+function render(){
+  const app = document.getElementById('app');
+  let html = '';
+  if(state.route==='home') html = renderHome();
+  else if(state.route==='detail') html = renderDetail();
+  else if(state.route==='add1') html = renderAdd1();
+  else if(state.route==='add2') html = renderAdd2();
+  else if(state.route==='confirmation') html = renderConfirmation();
+  app.innerHTML = html;
+  attachEvents();
+  if(window.lucide) lucide.createIcons();
+}
+
+function renderModal(show){
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = show ? renderLoginModal() : '';
+  if(show){
+    document.getElementById('closeModalBtn').addEventListener('click', ()=>renderModal(false));
+    document.getElementById('modalOverlay').addEventListener('click', (e)=>{
+      if(e.target.id==='modalOverlay') renderModal(false);
+    });
+  }
+  if(window.lucide) lucide.createIcons();
+}
+
+function attachEvents(){
+  if(state.route==='home'){
+    const searchInput = document.getElementById('searchInput');
+    const cityInput = document.getElementById('cityInput');
+    const searchBtn = document.getElementById('searchBtn');
+    if(searchInput) searchInput.addEventListener('keyup', e=>{ state.query = e.target.value; if(e.key==='Enter') render(); });
+    if(searchBtn) searchBtn.addEventListener('click', ()=>{ state.query = searchInput.value; state.city = cityInput.value; render(); });
+    if(cityInput) cityInput.addEventListener('change', e=>{ state.city = e.target.value; render(); });
+
+    document.querySelectorAll('.cat-chip').forEach(el=>{
+      el.addEventListener('click', ()=>{ state.activeCat = el.dataset.cat; render(); });
+    });
+    document.querySelectorAll('.view-toggle button').forEach(el=>{
+      el.addEventListener('click', ()=>{ state.listMode = el.dataset.mode; render(); });
+    });
+    document.querySelectorAll('[data-select]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const id = parseInt(el.dataset.select);
+        state.selected = BUSINESSES.find(b=>b.id===id);
+        state.route = 'detail';
+        render();
+        window.scrollTo(0,0);
+      });
+    });
+  }
+
+  if(state.route==='detail'){
+    document.getElementById('backBtn').addEventListener('click', ()=>{ state.route='home'; render(); });
+  }
+
+  if(state.route==='add1'){
+    document.getElementById('cancelBtn').addEventListener('click', ()=>{ state.route='home'; render(); });
+    document.getElementById('toStep2Btn').addEventListener('click', ()=>{
+      state.form.name = document.getElementById('f_name').value;
+      state.form.cat = document.getElementById('f_cat').value;
+      state.form.city = document.getElementById('f_city').value;
+      state.form.phone = document.getElementById('f_phone').value;
+      state.form.email = document.getElementById('f_email').value;
+      state.form.desc = document.getElementById('f_desc').value;
+      state.route = 'add2';
+      render();
+      window.scrollTo(0,0);
+    });
+  }
+
+  if(state.route==='add2'){
+    document.getElementById('backToStep1Btn').addEventListener('click', ()=>{ state.route='add1'; render(); });
+    document.querySelectorAll('.plan-card').forEach(el=>{
+      el.addEventListener('click', ()=>{ state.plan = el.dataset.plan; render(); });
+    });
+    const finishBtn = document.getElementById('finishBtn');
+    finishBtn.addEventListener('click', ()=>{
+      if(state.plan===''){ return; }
+      state.route = 'confirmation';
+      render();
+      window.scrollTo(0,0);
+    });
+  }
+
+  if(state.route==='confirmation'){
+    document.getElementById('finalBackBtn').addEventListener('click', ()=>{
+      state.route = 'home';
+      state.form = { name:"", cat:"", city:"", phone:"", email:"", desc:"" };
+      state.plan = "";
+      render();
+    });
+  }
+}
+
+document.getElementById('logoBtn').addEventListener('click', ()=>{ state.route='home'; state.selected=null; render(); });
+document.getElementById('addBtn').addEventListener('click', ()=>{ state.route='add1'; render(); window.scrollTo(0,0); });
+document.getElementById('loginBtn').addEventListener('click', ()=>renderModal(true));
+
+render();
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"17c3221fbacb43f699c25550c7411f62","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
+
